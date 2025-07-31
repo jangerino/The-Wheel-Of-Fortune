@@ -9,21 +9,21 @@ body{
 	justify-content: center;
 	overflow: hidden;
 	min-height: 100vh;
-	background: #00beac;
+	background: #232225;
 }
 .container{
 	height: 350px;
 	width: 350px;
-	background: #4ed4c6;
+	background: #000000;
 	position: relative;
 	border-radius: 50%;
 	overflow: hidden;
 	box-shadow: 0 0 10px gray;
-	transition: 3s all;
+	transition: 30s all;
 }
 .container div{
 	height: 50%;
-	width: 200px;
+	width: 203px;
 	clip-path: polygon(100% 0,50% 100%, 0 0);
 	transform: translateX(-50%);
 	transform-origin: bottom;
@@ -35,54 +35,49 @@ body{
 	font-size: 20px;
 	font-family: monospace;
 	font-weight: 1000;
-	color:#008276; 
+	color:#ffffff; 
 	 writing-mode: vertical-rl;
 }
 .container .one{
-	background: #baf4ee;
-	left: 50%;
+    width: 350px;
+	background: #84b3cb;
+	position: absolute;
+    left: 50%
 }
 .container .two{
-	background: #4ed4c6;
-	transform: rotate(60deg);
+    width: 350px;
+    left:0%;
+	background: #ea8e35;
+	transform: rotate(90deg);
+    writing-mode:sideways-lr;
 }
 .container .three{
-	background: #baf4ee;
-	transform: rotate(120deg);
-}
-.container .four{
-	background: #4ed4c6;
+    width: 350px;
+    left:0%;
+	background: #c8492c;
 	transform: rotate(180deg);
 }
-.container .five{
-	background: #baf4ee;
-	transform: rotate(240deg);
+.container .four{
+    width: 350px;
+    left:0%;
+	background: #903d27;
+	transform: rotate(270deg);
 }
-.container .six{
-	background: #4ed4c6;
-	transform: rotate(300deg);
-}
-.mid{
-	height: 25px;
-	width: 25px;
-	border-radius: 50%;
-	position: absolute;
-	background: #008276;
-}
+
 #spin{
-	height: 60px;
-	width: 200px;
-	background: #4ed4c6;
+	height: 55px;
+	width: 55px;
+	background: #232225;
 	position: absolute;
-	margin-top: 600px;
-	font-size: 30px;
-	color: white;
+	margin-top: 0px;
+	font-size: 20px;
+	color: rgb(255, 255, 255);
 	font-weight: 1000;
-	letter-spacing: 4px;
-	border: 1px solid white;
+	letter-spacing: 1px;
+	border: 1px #232225;
 	cursor: pointer;
-	box-shadow: 0 5px 10px gray;
 	transition: 0.2s all;
+    border-radius: 50%;
 }
 #spin:hover{
 	box-shadow: none;
@@ -90,7 +85,7 @@ body{
 .stoper{
 	height: 50px;
 	width: 40px;
-	background: #ffd600;
+	background: #fe1010;
 	position: absolute;
 	clip-path: polygon(100% 0,50% 100%, 0 0);
 	margin-top: -350px;
