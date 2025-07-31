@@ -9,7 +9,8 @@ body{
 	justify-content: center;
 	overflow: hidden;
 	min-height: 100vh;
-	background: #232225;
+	color:var(--tg-theme-text-color)
+	background:var(--tg-theme-bg-color)
 }
 .container{
 	height: 350px;
