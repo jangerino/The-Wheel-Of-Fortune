@@ -15,17 +15,19 @@ body{
 .container{
 	height: 350px;
 	width: 350px;
-	background: #000000;
+	background: #ea8e35;
 	position: relative;
 	border-radius: 50%;
 	overflow: hidden;
 	box-shadow: 0 0 10px gray;
 	transition: 30s all;
+    
+
 }
 .container div{
 	height: 50%;
 	width: 203px;
-	clip-path: polygon(100% 0,50% 100%, 0 0);
+	/* clip-path: polygon(100% 0,50% 100%, 0 0); */
 	transform: translateX(-50%);
 	transform-origin: bottom;
 	position: absolute;
@@ -39,32 +41,110 @@ body{
 	color:#ffffff; 
 	 writing-mode: vertical-rl;
 }
+/* .container .one {
+  width: 40px;
+  height: 40px;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 300px solid #32557f;
+  border-radius: 50%;
+} */
+.container .sectro .one{
+    clip-path: polygon(5% 10%, 10% 102%, 5% 5%);
+ }
+  .sectro .two{
+    clip-path: polygon(-15% 0%, 110% 0%, 48.7% 95%);
+ }
+  .sectro .three{
+    clip-path: polygon(-15% 0%, 110% 0%, 48.7% 95%);
+ }
+  .sectro .four{
+    clip-path: polygon(-15% 0%, 110% 0%, 48.7% 95%);
+ }
+  .sectro .five{
+    clip-path: polygon(-15% 0%, 110% 0%, 48.7% 95%);
+ }
+
 .container .one{
-    width: 350px;
-	background: #84b3cb;
-	position: absolute;
-    left: 50%
+    clip-path: polygon(-100% 0px, 206% -20%, 60% 122%);
+    background-color:  #84b3cb;
+    /* width: 3px;
+    height: 180px;
+    left: 173.5px; */
+    transform: rotate(0deg);
+    position:0px;
 }
-.container .two{
-    width: 350px;
-    left:0%;
+
+ .container .two{
+    clip-path: polygon(-15% 0%, 120% -18%, 52% 101%);
+    /* width: 3px;
+    height: 180px;
+    left: 173.5px; */
 	background: #ea8e35;
-	transform: rotate(90deg);
+	transform: rotate(74deg);
     writing-mode:sideways-lr;
 }
 .container .three{
-    width: 350px;
-    left:0%;
+    clip-path: polygon(-25% -29%, 120% -11%, 51% 100%);
+    /* width: 3px;
+    height: 180px;
+    left: 173.5px; */
 	background: #c8492c;
-	transform: rotate(180deg);
+	transform: rotate(144deg);
+    writing-mode:sideways-lr;
 }
 .container .four{
-    width: 350px;
-    left:0%;
+    clip-path: polygon(-30% -29%, 245px -34px, 48% 100%);
+    /* width: 3px;
+    height: 180px;
+    left: 173.5px; */
 	background: #903d27;
-	transform: rotate(270deg);
+	transform: rotate(216deg);
 }
+.container .five{
+    clip-path: polygon(-50% -80px, 110% -0%, 50% 170px);
+    /* width: 3px;
+    height: 180px;
+    left: 173.5px; */
+	background: #ea8e35;
+	transform: rotate(288deg); 
+} 
 
+
+.container .line{
+    width: 3px;
+    height: 180px;
+    left: 173.5px;
+	background: #000000;
+	transform: rotate(36deg); 
+}.container .line1{
+    width: 3px;
+    height: 180px;
+    left: 173.5px;
+	background: #000000;
+	transform: rotate(-36deg); 
+}
+.container .line2{
+    width: 3px;
+    height: 180px;
+    left: 173.5px;
+	background: #000000;
+	transform: rotate(108deg); 
+}
+.container .line3{
+    width: 3px;
+    height: 180px;
+    left: 173.5px;
+	background: #000000;
+	transform: rotate(180deg); 
+}
+.container .line4{
+    width: 3px;
+    height: 180px;
+    left: 173.5px;
+	background: #000000;
+	transform: rotate(-108deg); 
+}
 #spin{
 	height: 55px;
 	width: 55px;
@@ -89,6 +169,10 @@ body{
 	background: #fe1010;
 	position: absolute;
 	clip-path: polygon(100% 0,50% 100%, 0 0);
-	margin-top: -350px;
+	margin-top: -349.4px;
 }
+
+
+
+
 
