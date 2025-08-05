@@ -1,84 +1,88 @@
 let container = document.querySelector(".container");
 let btn = document.getElementById("spin");
-let number = Math.ceil(Math.random() * 10000);
-let isSpinning = false;
+let result = document.getElementById("result")
+// let number = Math.ceil(Math.random(1000) * 10000);
+// let isSpinning = false;
 
-// Вероятности для каждого сектора (в процентах)
-const prizeProbabilities = {
-  "Приз 1": 100,
-  "Приз 2": 0,
-  "Приз 3": 0,
-  "Приз 4": 0,
-  "Ничего": 0
-};
+const prizes =[
+  {name:"Приз 1", chance:0},
+  {name:"Приз 2", chance:0},
+  {name:"Приз 3", chance:100},
+  {name:"Приз 4", chance:0},
+  {name:"Ничего", chance:0}
+];
 
-// Функция для взвешенного случайного выбора
-function weightedRandom(probabilities) {
-  const prizes = Object.keys(probabilities);
-  const weights = Object.values(probabilities);
+let rotation = 0;
 
-  let i;
-  let random = Math.random();
+function sectors(){
+  const numPrizes = prizes.length;
+  const angle = 360/numPrizes;
+  let currentAngle = 0;
 
-  for (i = 0; i < prizes.length; i++) {
-    random -= weights[i] / 100;
-    if (random <= 0) {
-      return prizes[i];
+
+prizes.forEach((prize, index) => {
+        const sector = document.createElement("div");
+        sector.classList.add("sector");
+        sector.style.transformOrigin = "50% 100%";
+        sector.style.transform = `rotate(${currentAngle}deg)`;
+        sector.style.width = '100%';
+        sector.style.height = '50%';
+        sector.style.position = 'absolute';
+        sector.style.top = '0';
+        sector.style.left = '0';
+        sector.style.textAlign = 'center';
+        sector.style.lineHeight = '150px';
+        sector.textContent = prize.name;
+
+        // Добавляем немного стилизации (можно улучшить в CSS)
+        sector.style.backgroundColor = `hsl(${index * (360 / numPrizes)} `;
+
+        container.appendChild(sector);
+        currentAngle += angle;
+      });
     }
-  }
 
-  return prizes[prizes.length - 1]; // Вернуть последний приз по умолчанию
-}
+    function choosePrize(){
+      const randomNumber = Math.random()*100;
+      let cumulativeChance = 0;
 
-btn.onclick = function () {
-  if (isSpinning) {
-    return;
-  }
+      for(let i = 0;i<prizes.length;i++){
+        cumulativeChance +=prizes[i].chance;
+        if(randomNumber <=cumulativeChance){
+          return prizes[i];
+        }
+      }
+      return prizes[prizes,length-1]
+    }
+    // Функция для запуска вращения
+    function spinWheel() {
+        spin.disabled = true; // Отключаем кнопку, чтобы нельзя было крутить несколько раз
 
-  isSpinning = true;
+        const winningPrize = choosePrize();
+        const numPrizes = prizes.length;
+        const winningIndex = prizes.findIndex(prize => prize.name === winningPrize.name);
+        const anglePerPrize = 360 / numPrizes;
 
-  // Определяем победивший сектор С УЧЕТОМ ВЕРОЯТНОСТЕЙ
-  const winningPrize = weightedRandom(prizeProbabilities);
-
-  // Вычисляем угол, соответствующий выпавшему сектору
-  let winningAngle = getAngleForPrize(winningPrize); // Новая функция
-
-  // Добавляем случайное число оборотов, чтобы не было очевидно
-  let randomNumber = Math.ceil(Math.random() * 3600);
-
-  let finalRotation = number + randomNumber + winningAngle;
-
-
-  container.style.transition = 'transform 5s cubic-bezier(0.23, 1, 0.320, 1)';
-  container.style.transform = "rotate(" + finalRotation + "deg)";
+        // Рассчитываем угол остановки (добавляем случайность для более реалистичного вида)
+        const stopAngle = 360 * 5 + (360 - winningIndex * anglePerPrize) - anglePerPrize / 2 + (Math.random() * anglePerPrize);
 
 
-  setTimeout(function () {
-    isSpinning = false;
-    container.style.transition = 'none';
-    number = finalRotation % 360;
+        container.style.transition = 'transform 5s cubic-bezier(0.25, 0.46, 0.45, 0.94)'; // Более интересная кривая замедления
+        container.style.transform = `rotate(${stopAngle}deg)`;
+        rotationDegrees = stopAngle;
 
-    alert("Вы выиграли: " + winningPrize); // Используем winningPrize
+        // После завершения вращения показываем результат
+        setTimeout(() => {
+            container.style.transition = 'none'; // Убираем transition, чтобы следующий поворот был корректным
+            container.style.transform = `rotate(${rotationDegrees % 360}deg)`; // Устанавливаем конечное положение
+            alert("Вы выиграли: " + winningPrize.name);
+            spin.disabled = true; // Включаем кнопку снова
+        }, 5000); // 5 секунд
+    }
 
-  }, 5000);
-};
 
+    // Создаем сектора при загрузке страницы
+    sectors();
 
-
-function getAngleForPrize(prize) {
-  // Функция, которая возвращает угол для заданного приза
-  // ВАЖНО: Убедитесь, что порядок секторов в HTML соответствует порядку в prizeProbabilities
-  const numberOfSectors = 5;
-  const sectorAngle = 360 / numberOfSectors;
-
-  switch (prize) {
-    case "Приз 1": return 0 * sectorAngle; // Первый сектор начинается с 0
-    case "Приз 2": return 1 * sectorAngle;
-    case "Приз 3": return 2 * sectorAngle;
-    case "Приз 4": return 3 * sectorAngle;
-    case "Ничего": return 4 * sectorAngle;
-    default: return 0; //  Обработка ошибки
-  }
-}
-
-// Убираем функцию getWinningSector, она больше не нужна
+    // Добавляем слушатель на кнопку
+    spin.addEventListener("click", spinWheel);
