@@ -1,26 +1,24 @@
 let container = document.querySelector(".container");
 let btn = document.getElementById("spin");
-let result = document.getElementById("result")
-// let number = Math.ceil(Math.random(1000) * 10000);
-// let isSpinning = false;
+let result = document.getElementById("result");
 
-const prizes =[
-  {name:"Приз 1", chance:0},
-  {name:"Приз 2", chance:0},
-  {name:"Приз 3", chance:100},
-  {name:"Приз 4", chance:0},
-  {name:"Ничего", chance:0}
+const prizes = [
+    { name: "Приз 1", chance: 10 },
+    { name: "Приз 2", chance: 10 },
+    { name: "Приз 3", chance: 10 },
+    { name: "Приз 4", chance: 10 },
+    { name: "Ничего", chance: 60 }
 ];
 
 let rotation = 0;
+let rotationDegrees = 0; // Add this line
 
-function sectors(){
-  const numPrizes = prizes.length;
-  const angle = 360/numPrizes;
-  let currentAngle = 0;
+function sectors() {
+    const numPrizes = prizes.length;
+    const angle = 360 / numPrizes;
+    let currentAngle = 0;
 
-
-prizes.forEach((prize, index) => {
+    prizes.forEach((prize, index) => {
         const sector = document.createElement("div");
         sector.classList.add("sector");
         sector.style.transformOrigin = "50% 100%";
@@ -35,54 +33,76 @@ prizes.forEach((prize, index) => {
         sector.textContent = prize.name;
 
         // Добавляем немного стилизации (можно улучшить в CSS)
-        sector.style.backgroundColor = `hsl(${index * (360 / numPrizes)} `;
+     // Added saturation and lightness
 
         container.appendChild(sector);
         currentAngle += angle;
-      });
-    }
+    });
+}
 
-    function choosePrize(){
-      const randomNumber = Math.random()*100;
-      let cumulativeChance = 0;
+function choosePrize() {
+    const randomNumber = Math.random() * 100;
+    let cumulativeChance = 0;
 
-      for(let i = 0;i<prizes.length;i++){
-        cumulativeChance +=prizes[i].chance;
-        if(randomNumber <=cumulativeChance){
-          return prizes[i];
+    for (let i = 0; i < prizes.length; i++) {
+        cumulativeChance += prizes[i].chance;
+        if (randomNumber <= cumulativeChance) {
+            return prizes[i];
         }
-      }
-      return prizes[prizes,length-1]
     }
-    // Функция для запуска вращения
-    function spinWheel() {
-        spin.disabled = true; // Отключаем кнопку, чтобы нельзя было крутить несколько раз
+    return prizes[prizes.length - 1]; // Corrected the index
+}
 
-        const winningPrize = choosePrize();
-        const numPrizes = prizes.length;
-        const winningIndex = prizes.findIndex(prize => prize.name === winningPrize.name);
-        const anglePerPrize = 360 / numPrizes;
+// Функция для запуска вращения
+function spinWheel() {
+    btn.disabled = true; // Отключаем кнопку, чтобы нельзя было крутить несколько раз
 
-        // Рассчитываем угол остановки (добавляем случайность для более реалистичного вида)
-        const stopAngle = 360 * 5 + (360 - winningIndex * anglePerPrize) - anglePerPrize / 2 + (Math.random() * anglePerPrize);
+    const winningPrize = choosePrize();
+    const numPrizes = prizes.length;
+    const winningIndex = prizes.findIndex(prize => prize.name === winningPrize.name);
+    const anglePerPrize = 360 / numPrizes;
+
+    // Рассчитываем угол остановки (добавляем случайность для более реалистичного вида)
+    const stopAngle = 360 * 5 + (360 - winningIndex * anglePerPrize) - anglePerPrize / 2 + (Math.random() * anglePerPrize);
 
 
-        container.style.transition = 'transform 5s cubic-bezier(0.25, 0.46, 0.45, 0.94)'; // Более интересная кривая замедления
-        container.style.transform = `rotate(${stopAngle}deg)`;
-        rotationDegrees = stopAngle;
+    container.style.transition = 'transform 5s cubic-bezier(0.25, 0.46, 0.45, 0.94)'; // Более интересная кривая замедления
+    container.style.transform = `rotate(${stopAngle}deg)`;
+    rotationDegrees = stopAngle; // Store the rotation angle
+    localStorage.setItem('rotationDegrees', rotationDegrees); // Store rotation in localStorage
+    localStorage.setItem('winningPrize', winningPrize.name); // Store prize in localStorage
 
-        // После завершения вращения показываем результат
-        setTimeout(() => {
-            container.style.transition = 'none'; // Убираем transition, чтобы следующий поворот был корректным
-            container.style.transform = `rotate(${rotationDegrees % 360}deg)`; // Устанавливаем конечное положение
-            alert("Вы выиграли: " + winningPrize.name);
-            spin.disabled = true; // Включаем кнопку снова
-        }, 5000); // 5 секунд
+
+    // После завершения вращения показываем результат
+    setTimeout(() => {
+        container.style.transition = 'none'; // Убираем transition, чтобы следующий поворот был корректным
+        container.style.transform = `rotate(${rotationDegrees % 360}deg)`; // Устанавливаем конечное положение
+        alert("Вы выиграли: " + winningPrize.name);
+        btn.disabled = true;
+        console.log(winningPrize.name);
+    }, 5000); // 5 секунд
+}
+
+// Создаем сектора при загрузке страницы
+sectors();
+
+
+// Check for previously won prize on page load
+window.addEventListener('load', () => {
+    const savedRotation = localStorage.getItem('rotationDegrees');
+    const savedPrize = localStorage.getItem('winningPrize');
+
+    if (savedRotation && savedPrize) {
+        rotationDegrees = parseFloat(savedRotation);
+        container.style.transition = 'none';
+        container.style.transform = `rotate(${rotationDegrees % 360}deg)`;
+        alert("Последний выигрыш: " + savedPrize);
+        btn.disabled = true;
+        localStorage.removeItem('rotationDegrees');
+        localStorage.removeItem('winningPrize');
     }
+});
 
 
-    // Создаем сектора при загрузке страницы
-    sectors();
-
-    // Добавляем слушатель на кнопку
-    spin.addEventListener("click", spinWheel);
+// Добавляем слушатель на кнопку
+spin.addEventListener("click", spinWheel);
