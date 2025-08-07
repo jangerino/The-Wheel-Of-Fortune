@@ -86,23 +86,27 @@ function spinWheel() {
 // Создаем сектора при загрузке страницы
 sectors();
 
-
-// Check for previously won prize on page load
 window.addEventListener('load', () => {
     const savedRotation = localStorage.getItem('rotationDegrees');
     const savedPrize = localStorage.getItem('winningPrize');
+    const spun = localStorage.getItem('spun'); // Check the flag
 
     if (savedRotation && savedPrize) {
         rotationDegrees = parseFloat(savedRotation);
         container.style.transition = 'none';
         container.style.transform = `rotate(${rotationDegrees % 360}deg)`;
         alert("Последний выигрыш: " + savedPrize);
+        btn.disabled = true; // Always disable the button
+    }
+    if (spun === 'true') {
         btn.disabled = true;
-        localStorage.removeItem('rotationDegrees');
-        localStorage.removeItem('winningPrize');
     }
 });
 
-
 // Добавляем слушатель на кнопку
-spin.addEventListener("click", spinWheel);
+btn.addEventListener("click", spinWheel);
+
+// Disable the button on load if spun flag is set
+if (localStorage.getItem('spun') === 'true') {
+    btn.disabled = true;
+}
