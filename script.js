@@ -1,6 +1,9 @@
 let container = document.querySelector(".container");
 let btn = document.getElementById("spin");
 let result = document.getElementById("result");
+/ @type {WebSocket} */
+let websocket;
+
 
 const prizes = [
     { name: "Приз 1", chance: 10 },
@@ -103,6 +106,40 @@ window.addEventListener('load', () => {
     }
 });
 
+function connectWebSocket() {
+  websocket = new WebSocket("ws://localhost:63342"); // Замените URL
+
+  websocket.onopen = () => {
+    console.log("Соединение с WebSocket установлено");
+
+  websocket.onclose = () => {
+       console.log("WebSocket connection closed");
+   };
+
+   websocket.onerror = (error) => {
+       console.error("WebSocket error:", error);
+   };
+     const userId = localStorage.getItem('userId'); // Получаем user_id из localStorage
+      if (userId) {
+          const connectionMessage = { user_id: userId };
+          websocket.send(JSON.stringify(connectionMessage)); // Отправляем user_id при подключении
+      } else {
+          console.error("User ID не найден в localStorage");
+      }
+
+  };
+function spinWheel() {
+    //...
+
+        // Отправка приза через WebSocket
+        if (websocket && websocket.readyState === WebSocket.OPEN) {
+            const userId = localStorage.getItem('userId');
+            const message = { prize: winningPrize.name, user_id: userId }; //Send user ID
+            websocket.send(JSON.stringify(message));
+            localStorage.setItem('prizeShown', 'true'); //Mark prize shown
+            prizeShown = true; // Mark prize as shown
+        }
+
 // Добавляем слушатель на кнопку
 btn.addEventListener("click", spinWheel);
 
@@ -110,3 +147,4 @@ btn.addEventListener("click", spinWheel);
 if (localStorage.getItem('spun') === 'true') {
     btn.disabled = true;
 }
+}}
