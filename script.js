@@ -4,7 +4,7 @@ let result = document.getElementById("result");
 const websocketOutputDiv = document.getElementById("websocket-output");
 
 // Инициализация WebSocket
-const websocket = new WebSocket('ws://localhost:63342');
+const websocket = new WebSocket('ws://localhost:0');
 
 // Обработчики WebSocket
 websocket.onopen = () => {
@@ -70,7 +70,7 @@ function createSectors() {
         
         // Цвета секторов
         const hue = (currentAngle / 360) * 360;
-        sector.style.backgroundColor = `hsl(${hue}, 70%, 50%)`;
+        sector.style.backgroundColor = `hsl(${hue})`;
         
         container.appendChild(sector);
         currentAngle += angle;
@@ -139,3 +139,4 @@ document.addEventListener('DOMContentLoaded', () => {
     
     spinBtn.addEventListener('click', spinWheel);
 });
+
