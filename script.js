@@ -108,7 +108,7 @@ function spinWheel() {
     setTimeout(() => {
         container.style.transition = 'none';
         container.style.transform = `rotate(${stopAngle % 360}deg)`;
-        result.textContent = `Вы выиграли: ${winningPrize.name}`;
+        result.textContent = alert(`Вы выиграли: ${winningPrize.name}`);
 
         // Сохраняем результат в localStorage
         localStorage.setItem('lastPrize', winningPrize.name);
