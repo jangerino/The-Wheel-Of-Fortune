@@ -31,7 +31,7 @@ websocket.onerror = (error) => {
 function sendWebSocketMessage(message) {
     if (websocket.readyState === WebSocket.OPEN) {
         websocket.send(message);
-        websocketOutputDiv.innerHTML += `<p>Вы: ${message}</p>`;
+        websocketOutputDiv.innerHTML += '';
     } else {
         console.error('WebSocket не подключен');
     }
