@@ -4,7 +4,7 @@ let result = document.getElementById("result");
 const websocketOutputDiv = document.getElementById("websocket-output");
 
 // Инициализация WebSocket
-const websocket = new WebSocket('wss://495c02c762f7.ngrok-free.app');
+const websocket = new WebSocket('ws://localhost:8765');
 
 // Обработчики WebSocket
 websocket.onopen = () => {
@@ -108,8 +108,12 @@ function spinWheel() {
     setTimeout(() => {
         container.style.transition = 'none';
         container.style.transform = `rotate(${stopAngle % 360}deg)`;
-        result.textContent = "";
-        alert(`Вы выиграли: ${winningPrize.name}`);
+        result.textContent = `Вы выиграли: ${winningPrize.name}`;
+
+        // Сохраняем результат в localStorage
+        localStorage.setItem('lastPrize', winningPrize.name);
+        localStorage.setItem('hasSpun', 'true');
+
         // Отправка данных о выигрыше на сервер
         const userId = localStorage.getItem('userId');
         if (userId) {
@@ -119,16 +123,15 @@ function spinWheel() {
             });
             sendWebSocketMessage(message);
         }
-        
-        spinBtn.disabled = false;
 
+        spinBtn.disabled = true;
     }, 5000);
 }
 
 // Инициализация
 document.addEventListener('DOMContentLoaded', () => {
     createSectors();
-    
+
     // Получаем user_id из Telegram WebApp
     if (window.Telegram && Telegram.WebApp) {
         const user = Telegram.WebApp.initDataUnsafe.user;
@@ -137,6 +140,29 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('User ID сохранен:', user.id);
         }
     }
-    
-    spinBtn.addEventListener('click', spinWheel);
+
+    // Проверяем, был ли уже розыгрыш
+    const hasSpun = localStorage.getItem('hasSpun');
+    const lastPrize = localStorage.getItem('lastPrize');
+
+    if (hasSpun && lastPrize) {
+        // Показываем предыдущий результат
+        result.textContent = alert(`Ваш выигрыш: ${lastPrize}`);
+        spinBtn.disabled = true;
+    } else {
+        // Разрешаем крутить колесо
+        spinBtn.addEventListener('click', spinWheel);
+    }
 });
+    if (window.Telegram && Telegram.WebApp) {
+        const user = Telegram.WebApp.initDataUnsafe.user;
+        if (user && user.id) {
+            localStorage.setItem('userId', user.id);
+            console.log('User ID сохранен:', user.id);
+        }
+    }
+
+// ОТВЕЧАЕТ ЗА ТО ЧТОБ МОЖНО БЫЛО КРУТИТЬ ТОЛЬКО 1 РАЗ
+
+
+    spinBtn.addEventListener('click', spinWheel);
