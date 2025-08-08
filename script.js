@@ -4,7 +4,7 @@ let result = document.getElementById("result");
 const websocketOutputDiv = document.getElementById("websocket-output");
 
 // Инициализация WebSocket
-const websocket = new WebSocket('ws://localhost:8765');
+const websocket = new WebSocket('ws://495c02c762f7.ngrok-free.app');
 
 // Обработчики WebSocket
 websocket.onopen = () => {
