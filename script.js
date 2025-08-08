@@ -9,7 +9,7 @@ const websocket = new WebSocket('ws://localhost:8765');
 // Обработчики WebSocket
 websocket.onopen = () => {
     console.log('Соединение установлено');
-    websocketOutputDiv.innerHTML += '<p>Соединение установлено</p>';
+    websocketOutputDiv.innerHTML += '';
 };
 
 websocket.onmessage = (event) => {
@@ -19,12 +19,12 @@ websocket.onmessage = (event) => {
 
 websocket.onclose = () => {
     console.log('Соединение закрыто');
-    websocketOutputDiv.innerHTML += '<p>Соединение закрыто</p>';
+    websocketOutputDiv.innerHTML += '';
 };
 
 websocket.onerror = (error) => {
     console.error('Ошибка WebSocket:', error);
-    websocketOutputDiv.innerHTML += `<p>Ошибка: ${error}</p>`;
+    websocketOutputDiv.innerHTML += '';
 };
 
 // Функция для отправки сообщений
@@ -108,8 +108,8 @@ function spinWheel() {
     setTimeout(() => {
         container.style.transition = 'none';
         container.style.transform = `rotate(${stopAngle % 360}deg)`;
-        result.textContent = `Вы выиграли: ${winningPrize.name}`;
-        
+        result.textContent = "";
+        alert(`Вы выиграли: ${winningPrize.name}`);
         // Отправка данных о выигрыше на сервер
         const userId = localStorage.getItem('userId');
         if (userId) {
@@ -121,6 +121,7 @@ function spinWheel() {
         }
         
         spinBtn.disabled = false;
+
     }, 5000);
 }
 
@@ -139,4 +140,3 @@ document.addEventListener('DOMContentLoaded', () => {
     
     spinBtn.addEventListener('click', spinWheel);
 });
-
