@@ -4,7 +4,6 @@ let result = document.getElementById("result");
 const websocketOutputDiv = document.getElementById("websocket-output");
 
 // Инициализация WebSocket
-
 const websocket = new WebSocket('ws://81.19.136.28:8765');
 
 // Обработчики WebSocket
@@ -146,6 +145,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
     spinBtn.addEventListener('click', spinWheel);
 });
-
-
-
