@@ -5,7 +5,7 @@ const websocketOutputDiv = document.getElementById("websocket-output");
 
 // Инициализация WebSocket
 
-    const websocket = new WebSocket('wss://3sph1nsym.localto.net:8765'); // Если ваш сервер слушает на 8765 и localto.net перенаправляет на этот порт
+const websocket = new WebSocket('ws://127.0.0.1:8765');
 
 // Обработчики WebSocket
 websocket.onopen = () => {
@@ -146,4 +146,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     spinBtn.addEventListener('click', spinWheel);
 });
+
 
