@@ -4,7 +4,11 @@ let result = document.getElementById("result");
 const websocketOutputDiv = document.getElementById("websocket-output");
 
 // Инициализация WebSocket
-const websocket = new WebSocket('ws://127.0.0.1:8765');
+    const websocket = new WebSocket('wss://3sph1nsym.localto.net:443'); // Предполагаем WSS на порту 443
+    // или
+    const websocket = new WebSocket('ws://3sph1nsym.localto.net:80');   // Если localto.net не поддерживает WSS, попробуйте WS на порту 80
+    // или
+    const websocket = new WebSocket('ws://3sph1nsym.localto.net:8765'); // Если ваш сервер слушает на 8765 и localto.net перенаправляет на этот порт
 
 // Обработчики WebSocket
 websocket.onopen = () => {
