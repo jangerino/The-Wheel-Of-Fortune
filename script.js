@@ -5,7 +5,7 @@ const maxReconnectAttempts = 3;
 const reconnectDelay = 1000;
 
 function connectWebSocket() {
-    websocket = new WebSocket('wss://6zf7li9gr.localto.net');
+    websocket = new WebSocket('wss://3sph1nsym.localto.net/');
     
     websocket.onopen = () => {
         console.log('WebSocket подключен');
@@ -99,3 +99,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
