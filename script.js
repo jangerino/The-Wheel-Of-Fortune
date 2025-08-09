@@ -4,7 +4,7 @@ let result = document.getElementById("result");
 const websocketOutputDiv = document.getElementById("websocket-output");
 
 // Инициализация WebSocket
-const websocket = new WebSocket('ws://81.19.136.28:8765');
+const websocket = new WebSocket('ws://thewheeloffortune.ru:8080');
 
 // Обработчики WebSocket
 websocket.onopen = () => {
