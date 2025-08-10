@@ -145,11 +145,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
     spinBtn.addEventListener('click', spinWheel);
 });
-
-
-
-
-
-
-
-
