@@ -4,7 +4,7 @@ let result = document.getElementById("result");
 const websocketOutputDiv = document.getElementById("websocket-output");
 
 // Инициализация WebSocket
-const websocket = new WebSocket('wss://cqyk2c-5-139-226-107.ru.tuna.am');
+const websocket = new WebSocket('wss://vqbjr0-5-139-226-107.ru.tuna.am');
 
 // Обработчики WebSocket
 websocket.onopen = () => {
@@ -145,3 +145,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     spinBtn.addEventListener('click', spinWheel);
 });
+
