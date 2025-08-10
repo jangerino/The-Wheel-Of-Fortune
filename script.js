@@ -4,7 +4,7 @@ let result = document.getElementById("result");
 const websocketOutputDiv = document.getElementById("websocket-output");
 
 // Инициализация WebSocket
-const websocket = new WebSocket('wss://d504ed9c-4698-4b5e-b2bf-e959f83d5d9c.tunnel4.com');
+const websocket = new WebSocket('wss://tcp-free.tunnel4.com:32813');
 
 // Обработчики WebSocket
 websocket.onopen = () => {
@@ -145,6 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     spinBtn.addEventListener('click', spinWheel);
 });
+
 
 
 
