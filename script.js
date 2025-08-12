@@ -4,7 +4,7 @@ let result = document.getElementById("result");
 const websocketOutputDiv = document.getElementById("websocket-output");
 
 // Инициализация WebSocket
-const websocket = new WebSocket('wss://91adcaba69e8.ngrok-free.app');
+const websocket = new WebSocket('wss://6716fe27991b.ngrok-free.app');
 
 // Обработчики WebSocket
 websocket.onopen = () => {
@@ -145,6 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     spinBtn.addEventListener('click', spinWheel);
 });
+
 
 
 
