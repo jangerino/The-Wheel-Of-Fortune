@@ -1,187 +1,166 @@
-*{
-	padding: 0;
-	margin: 0;
-	box-sizing: border-box;
-}
-body{
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	overflow: hidden;
-	min-height: 100vh;
-	color:var(--tg-theme-text-color);
-	background:var(--tg-theme-bg-color)
-}
-.container{
-	transition: transform 5s ease-in-out;
-	height: 350px;
-	width: 350px;
-	background: #ea8e35;
-	position: relative;
-	border-radius: 50%;
-	overflow: hidden;
-	box-shadow: 0 0 10px gray;
-	transition: 30s all;
-    
+let container = document.querySelector(".container");
+let spinBtn = document.getElementById("spin");
+let result = document.getElementById("result");
+let websocketOutputDiv = document.getElementById("websocket-output");
 
-}
-.container div{
-	height: 50%;
-	width: 203px;
-	/* clip-path: polygon(100% 0,50% 100%, 0 0); */
-	transform: translateX(-50%);
-	transform-origin: bottom;
-	position: absolute;
-	left: 21%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 20px;
-	font-family: monospace;
-	font-weight: 1000;
-	color:#ffffff; 
-	 writing-mode: vertical-rl;
-}
-/* .container .one {
-  width: 40px;
-  height: 40px;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-top: 300px solid #32557f;
-  border-radius: 50%;
-} */
-/* .container .sectro .one{
-    clip-path: polygon(5% 10%, 10% 102%, 5% 5%);
- }
-  .sectro .two{
-    clip-path: polygon(-15% 0%, 110% 0%, 48.7% 95%);
- }
-  .sectro .three{
-    clip-path: polygon(-15% 0%, 110% 0%, 48.7% 95%);
- }
-  .sectro .four{
-    clip-path: polygon(-15% 0%, 110% 0%, 48.7% 95%);
- }
-  .sectro .five{
-    clip-path: polygon(-15% 0%, 110% 0%, 48.7% 95%);
- } */
+// Инициализация WebSocket
+let websocket = new WebSocket('wss://callback.thewheeloffortune.ru/ws');
 
-.container .one{
-    clip-path: polygon(-100% 0px, 206% -20%, 60% 122%);
-    background-color:  #84b3cb;
-    /* width: 3px;
-    height: 180px;
-    left: 173.5px; */
-    transform: rotate(0deg);
-    position:0px;
-}
+// Обработчики WebSocket
+websocket.onopen = function(e) {
+  console.log('[open] Соединение установлено');
 
- .container .two{
-    clip-path: polygon(-15% 0%, 120% -18%, 52% 101%);
-    /* width: 3px;
-    height: 180px;
-    left: 173.5px; */
-	background: #ea8e35;
-	transform: rotate(74deg);
-    writing-mode:sideways-lr;
-}
-.container .three{
-    clip-path: polygon(-25% -29%, 120% -11%, 51% 100%);
-    /* width: 3px;
-    height: 180px;
-    left: 173.5px; */
-	background: #c8492c;
-	transform: rotate(144deg);
-    writing-mode:sideways-lr;
-}
-.container .four{
-    clip-path: polygon(-30% -29%, 245px -34px, 48% 100%);
-    /* width: 3px;
-    height: 180px;
-    left: 173.5px; */
-	background: #903d27;
-	transform: rotate(216deg);
-	
-}
-.container .five{
-    clip-path: polygon(-50% -80px, 110% -0%, 50% 170px);
-    /* width: 3px;
-    height: 180px;
-    left: 173.5px; */
-	background: #ea8e35;
-	transform: rotate(288deg); 
-} 
+};
+
+websocket.onmessage = function(event) {
+  console.log('[message] Данные получены с сервера: ${event.data}';
+};
+
+websocket.onclose = function(event) {
+  if (event.wasClean) {
+    console.log('[close] Соединение закрыто чисто, код=${event.code} причина=${event.reason}');
+  } else {
+   console.log('Соединение прервано');
+  }
+};
+
+websocket.onerror = function(error) {
+  console.log('[error]');
+};
 
 
-.container .line{
-    width: 3px;
-    height: 180px;
-    left: 173.5px;
-	background: #000000;
-	transform: rotate(36deg); 
-}
-.container .line2{
-    width: 3px;
-    height: 180px;
-    left: 173.5px;
-	background: #000000;
-	transform: rotate(108deg); 
-}
-.container .line3{
-    width: 3px;
-    height: 180px;
-    left: 173.5px;
-	background: #000000;
-	transform: rotate(180deg); 
-}
-.container .line4{
-    width: 3px;
-    height: 180px;
-    left: 173.5px;
-	background: #000000;
-	transform: rotate(252deg); 
+
+
+
+// Призы и их вероятности
+const prizes = [
+    { name: "Приз 1", chance: 10 },
+    { name: "Приз 2", chance: 10 },
+    { name: "Приз 3", chance: 10 },
+    { name: "Приз 4", chance: 10 },
+    { name: "Ничего", chance: 60 }
+];
+
+let rotationDegrees = 0;
+
+// Создание секторов колеса
+function createSectors() {
+    const numPrizes = prizes.length;
+    const angle = 360 / numPrizes;
+    let currentAngle = 0;
+
+    prizes.forEach((prize) => {
+        const sector = document.createElement("div");
+        sector.classList.add("sector");
+        sector.style.transformOrigin = "50% 100%";
+        sector.style.transform = `rotate(${currentAngle}deg)`;
+        sector.style.width = '100%';
+        sector.style.height = '50%';
+        sector.style.position = 'absolute';
+        sector.style.top = '0';
+        sector.style.left = '0';
+        sector.style.textAlign = 'center';
+        sector.style.lineHeight = '150px';
+        // Создаем элемент для текста приза
+        const prizeText = document.createElement("span");
+        prizeText.textContent = prize.name;
+
+        // Если это "Приз 3", разворачиваем его
+        if (prize.name === "Приз 3") {
+            prizeText.style.transform = "rotate(180deg)";
+            prizeText.style.display = "inline-block"; // Для правильного отображения
+        }
+        if (prize.name === "Приз 2") {
+            prizeText.style.transform = "rotate(180deg)";
+            prizeText.style.display = "inline-block"; // Для правильного отображения
+        }
+
+        sector.appendChild(prizeText);  // Добавляем текст в сектор
+
+        // Цвета секторов
+        const hue = (currentAngle / 360) * 360;
+        sector.style.backgroundColor = `hsl(${hue})`;
+
+        container.appendChild(sector);
+        currentAngle += angle;
+
+    });
+
 }
 
-.container .line1{
-    width: 3px;
-    height: 180px;
-    left: 173.5px;
-	background: #000000;
-	transform: rotate(324deg); 
-}
-#spin{
-	height: 55px;
-	width: 55px;
-	background: #232225;
-	position: absolute;
-	margin-top: 0px;
-	font-size: 20px;
-	color: rgb(255, 255, 255);
-	font-weight: 1000;
-	letter-spacing: 1px;
-	border: 1px #232225;
-	cursor: pointer;
-	transition: 0.2s all;
-    border-radius: 50%;
-}
-#spin:hover{
-	box-shadow: none;
-}
-.stoper{
-	height: 50px;
-	width: 40px;
-	background: #fe1010;
-	position: absolute;
-	clip-path: polygon(100% 0,50% 100%, 0 0);
-	margin-top: -349.4px;
-}
 
-#result {
-      margin-top: 20px;
-      text-align: center;
-      font-size: 1.2em;
+
+// Выбор приза на основе вероятностей
+function choosePrize() {
+    const randomNumber = Math.random() * 100;
+    let cumulativeChance = 0;
+
+    for (let i = 0; i < prizes.length; i++) {
+        cumulativeChance += prizes[i].chance;
+        if (randomNumber <= cumulativeChance) {
+            return prizes[i];
+        }
     }
+    return prizes[prizes.length - 1];
+}
 
+// Функция вращения колеса
+function spinWheel() {
+spinBtn.disabled = true;
+const winningPrize = choosePrize();
+const numPrizes = prizes.length;
+const winningIndex = prizes.findIndex(prize => prize.name === winningPrize.name);
+const anglePerPrize = 360 / numPrizes;
 
+const stopAngle = 360 * 5 + (360 - winningIndex * anglePerPrize) - anglePerPrize / 2 + (Math.random() * anglePerPrize);
 
+container.style.transition = 'transform 5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+container.style.transform = `rotate(${stopAngle}deg)`;
 
+setTimeout(() => {
+container.style.transition = 'none';
+container.style.transform = `rotate(${stopAngle % 360}deg)`;
+result.textContent = `Вы выиграли: ${winningPrize.name}`;
+alert(`Вы выиграли: ${winningPrize.name}`);
+
+// Сохраняем выигрыш
+localStorage.setItem('wonPrize', winningPrize.name);
+
+// Отправка данных о выигрыше на сервер
+const userId = localStorage.getItem('userId');
+if (userId) {
+const message = JSON.stringify({
+user_id: userId,
+prize: winningPrize.name
+ });
+ sendWebSocketMessage(message);
+ }
+
+// Больше нельзя крутить
+spinBtn.disabled = true;
+}, 5000);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+createSectors();
+
+if (window.Telegram && Telegram.WebApp) {
+const user = Telegram.WebApp.initDataUnsafe.user;
+if (user && user.id) {
+localStorage.setItem('userId', user.id);
+console.log('User ID сохранен:', user.id);
+}
+}
+
+// Проверяем, есть ли уже выигрыш
+const wonPrize = localStorage.getItem('wonPrize');
+if (wonPrize) {
+result.textContent = '';
+spinBtn.disabled = true;
+alert(`Вы выиграли: ${wonPrize}`);
+} else {
+spinBtn.disabled = false;
+}
+
+spinBtn.addEventListener('click', spinWheel);
+});
